@@ -1,0 +1,646 @@
+[
+  {
+    "paperId": "e3d662bbd0e5539fe22a85f3518f960595b9914e",
+    "url": "https://www.semanticscholar.org/paper/e3d662bbd0e5539fe22a85f3518f960595b9914e",
+    "title": "Heterogeneous Graph Neural Network",
+    "venue": "Knowledge Discovery and Data Mining",
+    "authors": [
+      {
+        "authorId": "3407809",
+        "name": "Chuxu Zhang"
+      },
+      {
+        "authorId": "2451800",
+        "name": "Dongjin Song"
+      },
+      {
+        "authorId": "144277661",
+        "name": "Chao Huang"
+      },
+      {
+        "authorId": "144231976",
+        "name": "A. Swami"
+      },
+      {
+        "authorId": "144539424",
+        "name": "N. Chawla"
+      }
+    ]
+  },
+  {
+    "paperId": "e70930b8a8c7ba7af5f3df13ecf7b60364a4c189",
+    "url": "https://www.semanticscholar.org/paper/e70930b8a8c7ba7af5f3df13ecf7b60364a4c189",
+    "title": "Self-supervised Heterogeneous Graph Neural Network with Co-contrastive Learning",
+    "venue": "Knowledge Discovery and Data Mining",
+    "authors": [
+      {
+        "authorId": "2118449003",
+        "name": "Xiao Wang"
+      },
+      {
+        "authorId": "2087010708",
+        "name": "Nian Liu"
+      },
+      {
+        "authorId": "2112488351",
+        "name": "Hui-jun Han"
+      },
+      {
+        "authorId": "144123161",
+        "name": "C. Shi"
+      }
+    ]
+  },
+  {
+    "paperId": "566ad6bf92cb38fef18d52224b6e021da6b9efb9",
+    "url": "https://www.semanticscholar.org/paper/566ad6bf92cb38fef18d52224b6e021da6b9efb9",
+    "title": "LSPI: Heterogeneous Graph Neural Network Classification Aggregation Algorithm Based on Size Neighbor Path Identification",
+    "venue": "Applied Soft Computing",
+    "authors": [
+      {
+        "authorId": "2304361388",
+        "name": "Yufei Zhao"
+      },
+      {
+        "authorId": "2304362170",
+        "name": "Shiduo Wang"
+      },
+      {
+        "authorId": "2304334738",
+        "name": "Hua Duan"
+      }
+    ]
+  },
+  {
+    "paperId": "87ecf22381b8f9fec25f95590fb714d46390174e",
+    "url": "https://www.semanticscholar.org/paper/87ecf22381b8f9fec25f95590fb714d46390174e",
+    "title": "HGNN\u2212BRFE: Heterogeneous Graph Neural Network Model Based on Region Feature Extraction",
+    "venue": "Electronics",
+    "authors": [
+      {
+        "authorId": "2304361388",
+        "name": "Yufei Zhao"
+      },
+      {
+        "authorId": "2330756695",
+        "name": "Shixiao Xu"
+      },
+      {
+        "authorId": "2304334738",
+        "name": "Hua Duan"
+      }
+    ]
+  },
+  {
+    "paperId": "5711d45cc7740ffb29ccedde71e925837ac0c783",
+    "url": "https://www.semanticscholar.org/paper/5711d45cc7740ffb29ccedde71e925837ac0c783",
+    "title": "Knowledge Graph Enhanced Heterogeneous Graph Neural Network for Fake News Detection",
+    "venue": "IEEE transactions on consumer electronics",
+    "authors": [
+      {
+        "authorId": "2258963825",
+        "name": "Bingbing Xie"
+      },
+      {
+        "authorId": "2115722019",
+        "name": "Xiaoxia Ma"
+      },
+      {
+        "authorId": "2109176690",
+        "name": "Jia Wu"
+      },
+      {
+        "authorId": "2243424852",
+        "name": "Jian Yang"
+      },
+      {
+        "authorId": "2159242379",
+        "name": "Hao Fan"
+      }
+    ]
+  },
+  {
+    "paperId": "f94301bd489855cf49e7a131519d69635b49d1d5",
+    "url": "https://www.semanticscholar.org/paper/f94301bd489855cf49e7a131519d69635b49d1d5",
+    "title": "A Heterogeneous Graph Neural Network With Attribute Enhancement and Structure-Aware Attention",
+    "venue": "IEEE Transactions on Computational Social Systems",
+    "authors": [
+      {
+        "authorId": "2203798321",
+        "name": "Shenghang Fan"
+      },
+      {
+        "authorId": "50084260",
+        "name": "Guanjun Liu"
+      },
+      {
+        "authorId": "2151967772",
+        "name": "Jian Li"
+      }
+    ]
+  },
+  {
+    "paperId": "5da55436d3d0b00c8bf2a93e4ff38fdce55f473d",
+    "url": "https://www.semanticscholar.org/paper/5da55436d3d0b00c8bf2a93e4ff38fdce55f473d",
+    "title": "Detecting Depression With Heterogeneous Graph Neural Network in Clinical Interview Transcript",
+    "venue": "IEEE Transactions on Computational Social Systems",
+    "authors": [
+      {
+        "authorId": "50651672",
+        "name": "Mingzheng Li"
+      },
+      {
+        "authorId": "2140013536",
+        "name": "Xiao Sun"
+      },
+      {
+        "authorId": "2146059086",
+        "name": "Meng Wang"
+      }
+    ]
+  },
+  {
+    "paperId": "5b50b1a9834f562548b5bc0c5fb97e53ba57bb86",
+    "url": "https://www.semanticscholar.org/paper/5b50b1a9834f562548b5bc0c5fb97e53ba57bb86",
+    "title": "Heterogeneous Graph Neural Network via Attribute Completion",
+    "venue": "The Web Conference",
+    "authors": [
+      {
+        "authorId": "1860892",
+        "name": "Di Jin"
+      },
+      {
+        "authorId": "2106771001",
+        "name": "Cuiying Huo"
+      },
+      {
+        "authorId": "2106780589",
+        "name": "Chundong Liang"
+      },
+      {
+        "authorId": "5472921",
+        "name": "Liang Yang"
+      }
+    ]
+  },
+  {
+    "paperId": "1acb5cf3624d708ee4bda9261c00dc5661e5a8d4",
+    "url": "https://www.semanticscholar.org/paper/1acb5cf3624d708ee4bda9261c00dc5661e5a8d4",
+    "title": "Flexible job shop scheduling via deep reinforcement learning with meta-path-based heterogeneous graph neural network",
+    "venue": "Knowledge-Based Systems",
+    "authors": [
+      {
+        "authorId": "2053671015",
+        "name": "Lanjun Wan"
+      },
+      {
+        "authorId": "2302125363",
+        "name": "Long Fu"
+      },
+      {
+        "authorId": "1391213354",
+        "name": "Changyun Li"
+      },
+      {
+        "authorId": "2238045394",
+        "name": "Keqin Li"
+      }
+    ]
+  },
+  {
+    "paperId": "d4b53071956db266b6321804f84d1de24de7eb67",
+    "url": "https://www.semanticscholar.org/paper/d4b53071956db266b6321804f84d1de24de7eb67",
+    "title": "FC-HGNN: A heterogeneous graph neural network based on brain functional connectivity for mental disorder identification",
+    "venue": "Information Fusion",
+    "authors": [
+      {
+        "authorId": "2299923378",
+        "name": "Yuheng Gu"
+      },
+      {
+        "authorId": "2300052142",
+        "name": "Shoubo Peng"
+      },
+      {
+        "authorId": "2299907419",
+        "name": "Yaqin Li"
+      },
+      {
+        "authorId": "2265469369",
+        "name": "Linlin Gao"
+      },
+      {
+        "authorId": "2299876905",
+        "name": "Yihong Dong"
+      }
+    ]
+  },
+  {
+    "paperId": "d4ce78fd1ad8f5c707ecdbae0a44071665b48cb0",
+    "url": "https://www.semanticscholar.org/paper/d4ce78fd1ad8f5c707ecdbae0a44071665b48cb0",
+    "title": "XG-NID: Dual-Modality Network Intrusion Detection using a Heterogeneous Graph Neural Network and Large Language Model",
+    "venue": "Expert systems with applications",
+    "authors": [
+      {
+        "authorId": "2122343447",
+        "name": "Yasir Ali Farrukh"
+      },
+      {
+        "authorId": "2087755181",
+        "name": "S. Wali"
+      },
+      {
+        "authorId": "2151457738",
+        "name": "Irfan Khan"
+      },
+      {
+        "authorId": "2268405349",
+        "name": "Nathaniel D. Bastian"
+      }
+    ]
+  },
+  {
+    "paperId": "4cdddc199faace8188532979c4e2076d5a04ab58",
+    "url": "https://www.semanticscholar.org/paper/4cdddc199faace8188532979c4e2076d5a04ab58",
+    "title": "DAHGN: Degree-Aware Heterogeneous Graph Neural Network",
+    "venue": "Knowledge-Based Systems",
+    "authors": [
+      {
+        "authorId": "2165874096",
+        "name": "Mingxia Zhao"
+      },
+      {
+        "authorId": "2313429365",
+        "name": "Adele Lu Jia"
+      }
+    ]
+  },
+  {
+    "paperId": "d59623fc63ce7062804c29e6654c7cd6e606dd48",
+    "url": "https://www.semanticscholar.org/paper/d59623fc63ce7062804c29e6654c7cd6e606dd48",
+    "title": "Higher order heterogeneous graph neural network based on node attribute enhancement",
+    "venue": "Expert systems with applications",
+    "authors": [
+      {
+        "authorId": "153228001",
+        "name": "Chao Li"
+      },
+      {
+        "authorId": "2211350895",
+        "name": "Jinhu Fu"
+      },
+      {
+        "authorId": "2149251040",
+        "name": "Yeyu Yan"
+      },
+      {
+        "authorId": "145793197",
+        "name": "Zhongying Zhao"
+      },
+      {
+        "authorId": "2264241630",
+        "name": "Qingtian Zeng"
+      }
+    ]
+  },
+  {
+    "paperId": "5076b8847cc746b31348edc8cc2e860e0b3f4d60",
+    "url": "https://www.semanticscholar.org/paper/5076b8847cc746b31348edc8cc2e860e0b3f4d60",
+    "title": "Heterogeneous Graph Neural Network with Personalized and Adaptive Diversity for News Recommendation",
+    "venue": "ACM Transactions on the Web",
+    "authors": [
+      {
+        "authorId": "2218288596",
+        "name": "Guangping Zhang"
+      },
+      {
+        "authorId": "2259817156",
+        "name": "Dongsheng Li"
+      },
+      {
+        "authorId": "1759997",
+        "name": "Hansu Gu"
+      },
+      {
+        "authorId": "2284552265",
+        "name": "Tun Lu"
+      },
+      {
+        "authorId": "2258958923",
+        "name": "Ning Gu"
+      }
+    ]
+  },
+  {
+    "paperId": "5aac1e6f4d711fd35d88970ca12b98c72ce4b68c",
+    "url": "https://www.semanticscholar.org/paper/5aac1e6f4d711fd35d88970ca12b98c72ce4b68c",
+    "title": "Simple and Efficient Heterogeneous Graph Neural Network",
+    "venue": "AAAI Conference on Artificial Intelligence",
+    "authors": [
+      {
+        "authorId": "2258885",
+        "name": "Xiaocheng Yang"
+      },
+      {
+        "authorId": "152206233",
+        "name": "Mingyu Yan"
+      },
+      {
+        "authorId": "2585415",
+        "name": "Shirui Pan"
+      },
+      {
+        "authorId": "144530359",
+        "name": "Xiaochun Ye"
+      },
+      {
+        "authorId": "3276641",
+        "name": "Dongrui Fan"
+      }
+    ]
+  },
+  {
+    "paperId": "c7fd29fdd2e0b50a571db4f607eab138e9ecb644",
+    "url": "https://www.semanticscholar.org/paper/c7fd29fdd2e0b50a571db4f607eab138e9ecb644",
+    "title": "MAGNN: Metapath Aggregated Graph Neural Network for Heterogeneous Graph Embedding",
+    "venue": "The Web Conference",
+    "authors": [
+      {
+        "authorId": "15473346",
+        "name": "Xinyu Fu"
+      },
+      {
+        "authorId": "73329314",
+        "name": "Jiani Zhang"
+      },
+      {
+        "authorId": "1491449344",
+        "name": "Ziqiao Meng"
+      },
+      {
+        "authorId": "145310663",
+        "name": "Irwin King"
+      }
+    ]
+  },
+  {
+    "paperId": "0979aa1b592895fd73b0160e3ad9854d67a531f0",
+    "url": "https://www.semanticscholar.org/paper/0979aa1b592895fd73b0160e3ad9854d67a531f0",
+    "title": "Drug Repositioning via Multi-View Representation Learning With Heterogeneous Graph Neural Network",
+    "venue": "IEEE journal of biomedical and health informatics",
+    "authors": [
+      {
+        "authorId": "2277378105",
+        "name": "Li Peng"
+      },
+      {
+        "authorId": "2289597409",
+        "name": "Cheng Yang"
+      },
+      {
+        "authorId": "2313866654",
+        "name": "Jiahuai Yang"
+      },
+      {
+        "authorId": "2190808277",
+        "name": "Yuan Tu"
+      },
+      {
+        "authorId": "2314915687",
+        "name": "Qingchun Yu"
+      },
+      {
+        "authorId": "2238916988",
+        "name": "Zejun Li"
+      },
+      {
+        "authorId": "2290441373",
+        "name": "Min Chen"
+      },
+      {
+        "authorId": "2299771273",
+        "name": "Wei Liang"
+      }
+    ]
+  },
+  {
+    "paperId": "2013ae7d33f5216310722c0a0596a351f30dcdea",
+    "url": "https://www.semanticscholar.org/paper/2013ae7d33f5216310722c0a0596a351f30dcdea",
+    "title": "Metapath-aggregated heterogeneous graph neural network for drug-target interaction prediction",
+    "venue": "Briefings Bioinform.",
+    "authors": [
+      {
+        "authorId": "2187866912",
+        "name": "Mei Li"
+      },
+      {
+        "authorId": "3127329",
+        "name": "Xiangrui Cai"
+      },
+      {
+        "authorId": "2110510537",
+        "name": "Sihan Xu"
+      },
+      {
+        "authorId": "2062741265",
+        "name": "Hua Ji"
+      }
+    ]
+  },
+  {
+    "paperId": "7432caea9d81f7391b5e6d40a2bcc2cdc1c9fe4b",
+    "url": "https://www.semanticscholar.org/paper/7432caea9d81f7391b5e6d40a2bcc2cdc1c9fe4b",
+    "title": "PANNER: POS-Aware Nested Named Entity Recognition Through Heterogeneous Graph Neural Network",
+    "venue": "IEEE Transactions on Computational Social Systems",
+    "authors": [
+      {
+        "authorId": "2122830155",
+        "name": "Ling Zhou"
+      },
+      {
+        "authorId": "2109036461",
+        "name": "Jianming Li"
+      },
+      {
+        "authorId": "1697068",
+        "name": "Zhaoquan Gu"
+      },
+      {
+        "authorId": "50980085",
+        "name": "Jing Qiu"
+      },
+      {
+        "authorId": "2159511438",
+        "name": "B. Gupta"
+      },
+      {
+        "authorId": "4351602",
+        "name": "Zhihong Tian"
+      }
+    ]
+  },
+  {
+    "paperId": "d2f297d7eb967a3531eb6fa1520a89cdb1ed4d92",
+    "url": "https://www.semanticscholar.org/paper/d2f297d7eb967a3531eb6fa1520a89cdb1ed4d92",
+    "title": "Centrality-based Relation aware Heterogeneous Graph Neural Network",
+    "venue": "Knowledge-Based Systems",
+    "authors": [
+      {
+        "authorId": "2265687963",
+        "name": "Yangding Li"
+      },
+      {
+        "authorId": "2266023960",
+        "name": "Shaobin Fu"
+      },
+      {
+        "authorId": "2265720615",
+        "name": "Yangyang Zeng"
+      },
+      {
+        "authorId": "2266038318",
+        "name": "Hao Feng"
+      },
+      {
+        "authorId": "2121969980",
+        "name": "Ruoyao Peng"
+      },
+      {
+        "authorId": "2265715565",
+        "name": "Jinghao Wang"
+      },
+      {
+        "authorId": "2267864814",
+        "name": "Shichao Zhang"
+      }
+    ]
+  },
+  {
+    "paperId": "cfa6abd1af69cc6bce3a549a7886c47906dfdf4a",
+    "url": "https://www.semanticscholar.org/paper/cfa6abd1af69cc6bce3a549a7886c47906dfdf4a",
+    "title": "Federated Heterogeneous Graph Neural Network for Privacy-preserving Recommendation",
+    "venue": "The Web Conference",
+    "authors": [
+      {
+        "authorId": "2213477517",
+        "name": "Bo Yan"
+      },
+      {
+        "authorId": "2265464239",
+        "name": "Yang Cao"
+      },
+      {
+        "authorId": "2259921483",
+        "name": "Haoyu Wang"
+      },
+      {
+        "authorId": "1920109540",
+        "name": "Wenchuan Yang"
+      },
+      {
+        "authorId": "2260277448",
+        "name": "Junping Du"
+      },
+      {
+        "authorId": "2260331653",
+        "name": "Chuan Shi"
+      }
+    ]
+  },
+  {
+    "paperId": "936534a5309355bf3548dedb7c93da309d1a3541",
+    "url": "https://www.semanticscholar.org/paper/936534a5309355bf3548dedb7c93da309d1a3541",
+    "title": "Aspect-Based Sentiment Analysis With Heterogeneous Graph Neural Network",
+    "venue": "IEEE Transactions on Computational Social Systems",
+    "authors": [
+      {
+        "authorId": "2066297988",
+        "name": "Wenbin An"
+      },
+      {
+        "authorId": "143619377",
+        "name": "Feng Tian"
+      },
+      {
+        "authorId": "2158177936",
+        "name": "Ping Chen"
+      },
+      {
+        "authorId": "2152100151",
+        "name": "Qinghua Zheng"
+      }
+    ]
+  },
+  {
+    "paperId": "813af2ec9f1785bec9021f328487ae7dabe1ad4f",
+    "url": "https://www.semanticscholar.org/paper/813af2ec9f1785bec9021f328487ae7dabe1ad4f",
+    "title": "Solving Flexible Job-Shop Scheduling Problem with Heterogeneous Graph Neural Network Based on Relation and Deep Reinforcement Learning",
+    "venue": "Machines",
+    "authors": [
+      {
+        "authorId": "2319086493",
+        "name": "Hengliang Tang"
+      },
+      {
+        "authorId": "2318235696",
+        "name": "Jinda Dong"
+      }
+    ]
+  },
+  {
+    "paperId": "193c8c476e818298459133381086ea9b4633a21a",
+    "url": "https://www.semanticscholar.org/paper/193c8c476e818298459133381086ea9b4633a21a",
+    "title": "Multiplex Heterogeneous Graph Neural Network with Behavior Pattern Modeling",
+    "venue": "Knowledge Discovery and Data Mining",
+    "authors": [
+      {
+        "authorId": "11560076",
+        "name": "Chaofan Fu"
+      },
+      {
+        "authorId": "22698655",
+        "name": "Guanjie Zheng"
+      },
+      {
+        "authorId": "2163057040",
+        "name": "Chao Huang"
+      },
+      {
+        "authorId": "1949081",
+        "name": "Yanwei Yu"
+      },
+      {
+        "authorId": "2144063462",
+        "name": "Junyu Dong"
+      }
+    ]
+  },
+  {
+    "paperId": "5b4db4edd6cd79e46a529192f18263d2d6589c36",
+    "url": "https://www.semanticscholar.org/paper/5b4db4edd6cd79e46a529192f18263d2d6589c36",
+    "title": "User Cold-Start Recommendation via Inductive Heterogeneous Graph Neural Network",
+    "venue": "ACM Trans. Inf. Syst.",
+    "authors": [
+      {
+        "authorId": "2052543487",
+        "name": "Desheng Cai"
+      },
+      {
+        "authorId": "2070687",
+        "name": "Shengsheng Qian"
+      },
+      {
+        "authorId": "6342229",
+        "name": "Quan Fang"
+      },
+      {
+        "authorId": "2117230219",
+        "name": "Jun Hu"
+      },
+      {
+        "authorId": "2155590336",
+        "name": "Changsheng Xu"
+      }
+    ]
+  }
+]

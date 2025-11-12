@@ -1,0 +1,7 @@
+torch_geometric
+pyalex
+requests
+numpy
+tqdm
+pandas
+sentence-transformers
