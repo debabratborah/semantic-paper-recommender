@@ -1,57 +1,16 @@
-   
-###############################
-# CORE ML + EMBEDDINGS
-###############################
+# Core framework
+streamlit
+
+# Deep learning libraries (latest versions compatible with Python 3.13)
 torch==2.9.1
-torchvision==0.17.1
-torchaudio==2.9.1
-sentence-transformers==2.6.1
-transformers==4.37.0
-numpy>=1.24.0
-scikit-learn>=1.3.0
-pandas>=2.0.0
+torchvision==0.24.1
 
-###############################
-# GRAPH PROCESSING
-###############################
-networkx==3.1
-pyvis==0.3.2
+# Utilities
+requests
+pyvis
+rich
 
-###############################
-# TRAINING & UTILITY
-###############################
-tqdm>=4.66.0
-requests>=2.31.0
-
-###############################
-# FRONT-END UI
-###############################
-streamlit==1.36.0
-jinja2>=3.1.0
-
-###############################
-# OPTIONAL (Recommended Enhancements)
-###############################
-# interactive graph / environment refresh
-watchdog>=4.0.0
-Pillow>=10.0.0
-
-###############################
-# ACADEMIC DATA API SUPPORT
-###############################
-semantic-scholar>=0.5.1
-openalex==0.1.8
-
-###############################
-# REPORTING / VISUALIZATION
-###############################
-matplotlib>=3.8.0
-seaborn>=0.13.0
-
-###############################
-# DEVELOPMENT (Optional but Very Good)
-###############################
-black==24.3.0
-flake8>=7.0.0
-ipykernel>=6.29.0
-pytest>=8.0.0
+# Optional: add if you use them in your code
+numpy
+pandas
+matplotlib
