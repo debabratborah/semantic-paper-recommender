@@ -2,7 +2,6 @@ import os
 import torch
 import torch.nn.functional as F
 from torch import nn
-
 import streamlit as st
 from streamlit.components.v1 import html
 from sentence_transformers import SentenceTransformer
@@ -15,276 +14,257 @@ from train import train_model
 from visualize_graph import visualize_graph
 
 
-# =====================================================================================
-# STREAMLIT PAGE CONFIG
-# =====================================================================================
+# ===========================================================
+# PAGE CONFIG
+# ===========================================================
 st.set_page_config(
-    page_title="Heterogeneous GNN Paper Recommender",
+    page_title="Academic GNN Paper Recommender",
     page_icon="📚",
-    layout="centered"
+    layout="wide"
 )
 
 
-# =====================================================================================
-# BACKGROUND UI (Graph Animation + Research Images)
-# =====================================================================================
-html("""
-<style>
-body, .stApp {
-    background: #01010C;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-}
+# ===========================================================
+# BACKGROUND + CYBER GRAPH CSS
+# ===========================================================
+def inject_cyberpunk_css():
+    st.markdown(
+        """
+    <style>
 
-/* Paper images behind graph */
-.bg-layer {
-    background-image: 
-        url('https://images.unsplash.com/photo-1537432376769-00a2b8e1a87b'),
-        url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70');
-    background-size: 60%, 45%;
-    background-repeat: no-repeat;
-    background-position: left -150px top 120px, right -160px bottom 80px;
-    opacity: 0.06;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    z-index: -3;
-}
-
-/* Fullscreen canvas for graph */
-#bgcanvas {
-    position: fixed;
-    top:0; left:0;
-    width:100vw;
-    height:100vh;
-    z-index:-2;
-}
-</style>
-
-<div class="bg-layer"></div>
-<canvas id="bgcanvas"></canvas>
-
-<script>
-let canvas = document.getElementById('bgcanvas');
-let ctx = canvas.getContext('2d');
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const N = 60;
-const particles = [];
-
-for(let i=0;i<N;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        dx:(Math.random()-0.5)*0.5,
-        dy:(Math.random()-0.5)*0.5
-    });
-}
-
-function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle="rgba(5,5,15,0.90)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    ctx.strokeStyle="rgba(0,255,255,0.13)";
-    ctx.lineWidth=0.6;
-
-    // connections
-    for(let i=0;i<N;i++){
-        let a = particles[i];
-        for(let j=i+1;j<N;j++){
-            let b = particles[j];
-            let d = Math.hypot(a.x-b.x, a.y-b.y);
-
-            if(d < 190){
-                ctx.globalAlpha = 1 - d/190;
-                ctx.beginPath();
-                ctx.moveTo(a.x,a.y);
-                ctx.lineTo(b.x,b.y);
-                ctx.stroke();
-            }
-        }
+    /* === BACKGROUND === */
+    .stApp {
+        background: linear-gradient(160deg, #090a10 10%, #0b1121 60%, #050816 100%) !important;
+        background-attachment: fixed;
+        background-size: cover;
+        color: #E6EBFF !important;
     }
 
-    // nodes
-    for(let p of particles){
-        p.x+=p.dx; p.y+=p.dy;
-        if(p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if(p.y < 0 || p.y > canvas.height) p.dy *= -1;
-
-        ctx.beginPath();
-        ctx.fillStyle="rgba(0,255,255,0.85)";
-        ctx.arc(p.x,p.y,2.3,0,2*Math.PI);
-        ctx.fill();
+    body, .block-container {
+        background: transparent !important;
     }
-}
-setInterval(draw, 45);
-</script>
-""", height=0)
+
+    /* GRAPH NETWORK VIBES OVERLAY */
+    body::before {
+        content: "";
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top:0;
+        left:0;
+        opacity:0.08;
+        pointer-events:none;
+        background-image:
+            url("https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1400&q=60"),
+            url("https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=60");
+        background-size: cover;
+        background-position: center;
+        mix-blend-mode: overlay;
+        filter: blur(4px) brightness(1.2);
+    }
+
+    /* === HEADER === */
+    .neon-title {
+        text-align:center;
+        font-size:3.0rem;
+        font-weight:900;
+        text-transform:capitalize;
+        margin-top:0.5rem;
+        margin-bottom:1.4rem;
+        background: linear-gradient(90deg,#00f7ff,#2bb3ff,#ff2bfd,#f1ff00);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        letter-spacing:0.6px;
+        text-shadow:0 0 35px rgba(0,255,255,.25);
+    }
+
+    /* === SIDEBAR CLEAN === */
+    [data-testid="stSidebar"] {
+        background: rgba(7, 10, 25, .65);
+        backdrop-filter: blur(12px);
+        border-right: 1px solid rgba(0,255,240,0.15);
+    }
+    [data-testid="stSidebar"] * {
+        color: #E6EBFF !important;
+    }
+
+    /* === RECOMMENDATION CARDS === */
+    .rec-card {
+        background: rgba(10,14,32,0.82);
+        border-radius: 16px;
+        padding: 16px 18px;
+        border: 1px solid rgba(0,255,240,0.18);
+        box-shadow:0 0 18px rgba(0,0,0,0.65);
+        margin-bottom: 14px;
+        transition: all .22s ease-out;
+    }
+    .rec-card:hover {
+        transform: translateY(-3px) scale(1.01);
+        border-color: rgba(255,0,200,.45);
+        box-shadow:0 0 28px rgba(0,255,240,.25);
+    }
+
+    .rec-title { font-size:1.05rem; font-weight:700; color:#E8EDFF; }
+    .rec-meta  { font-size:0.9rem; color:#A4A8D0; }
+
+    .score-tag {
+        padding:2px 8px;
+        border-radius:999px;
+        background:rgba(255,0,200,0.12);
+        border:1px solid rgba(255,0,200,0.55);
+        color:#FFD6FA;
+    }
+    .rec-link a {
+        color:#48d9ff !important;
+        text-decoration:none;
+        font-size:0.92rem;
+    }
+
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
 
 
-# =====================================================================================
-# MODEL CACHE
-# =====================================================================================
 @st.cache_resource
 def load_sentence_model():
     return SentenceTransformer("intfloat/e5-base-v2")
 
 
-# =====================================================================================
-# RECOMMENDATION PIPELINE
-# =====================================================================================
-def recommend(query, limit, top_k):
+# ===========================================================
+# RECOMMEND ENGINE
+# ===========================================================
+def get_recommendations(query, limit, top_k):
     device = params["device"]
     model = load_sentence_model()
 
     works = fetch_papers(query, limit=limit)
     if not works:
-        return [], None, False, None
+        return [], None, False, works
 
     titles = [w.get("title", "") for w in works]
 
     paper_emb = torch.tensor(
         model.encode(titles),
         dtype=torch.float,
-        device=device
+        device=device,
     )
 
     pap_neighbors, pvp_neighbors = build_meta_path_adjs(works)
 
-    agg_pap = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
-    agg_pvp = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
-    proj_id = nn.Linear(params["st_dim"], params["semantic_proj_dim"] * params["L"]).to(device)
-    fusion = SemanticFusion(params["semantic_proj_dim"]*params["L"], params["semantic_proj_dim"]).to(device)
-    proj_user = nn.Linear(params["st_dim"], params["semantic_proj_dim"]*params["L"]).to(device)
+    # Load modules
+    ag_pap = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
+    ag_pvp = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
+    proj_identity = nn.Linear(params["st_dim"], params["semantic_proj_dim"] * params["L"]).to(device)
+    fusion = SemanticFusion(params["semantic_proj_dim"] * params["L"], params["semantic_proj_dim"]).to(device)
+    proj_user = nn.Linear(params["st_dim"], params["semantic_proj_dim"] * params["L"]).to(device)
 
     trained = False
     if os.path.exists("model_trained.pt"):
         ckpt = torch.load("model_trained.pt", map_location=device)
-        agg_pap.load_state_dict(ckpt["aggregator_pap"])
-        agg_pvp.load_state_dict(ckpt["aggregator_pvp"])
-        proj_id.load_state_dict(ckpt["proj_identity"])
+        ag_pap.load_state_dict(ckpt["aggregator_pap"])
+        ag_pvp.load_state_dict(ckpt["aggregator_pvp"])
+        proj_identity.load_state_dict(ckpt["proj_identity"])
         fusion.load_state_dict(ckpt["fusion"])
         proj_user.load_state_dict(ckpt["proj_user"])
         trained = True
 
-    E_pap = aggregate_meta_path(works, paper_emb, pap_neighbors, agg_pap, L=params["L"])
-    E_pvp = aggregate_meta_path(works, paper_emb, pvp_neighbors, agg_pvp, L=params["L"])
-    E_id = F.relu(proj_id(paper_emb))
+    E_pap = aggregate_meta_path(works, paper_emb, pap_neighbors, ag_pap, L=params["L"])
+    E_pvp = aggregate_meta_path(works, paper_emb, pvp_neighbors, ag_pvp, L=params["L"])
+    E_identity = torch.relu(proj_identity(paper_emb))
 
-    fused_items, meta_weights = fusion([E_id, E_pap, E_pvp])
+    fused_items, meta_weights = fusion([E_identity, E_pap, E_pvp])
     fused_items = F.normalize(fused_items, dim=1)
 
-    q_emb = model.encode([query])[0]
-    q_emb = torch.tensor(q_emb, dtype=torch.float, device=device)
+    q_emb = torch.tensor(model.encode([query])[0], dtype=torch.float, device=device)
     q_proj = F.normalize(proj_user(q_emb), dim=0)
 
     scores = torch.mv(fused_items, q_proj)
-    k = min(top_k, scores.size(0))
-
+    k = min(top_k, len(scores))
     topk = torch.topk(scores, k=k)
 
-    out = []
-    for idx, score in zip(topk.indices.tolist(), topk.values.tolist()):
+    recs = []
+    for rank, (idx, score) in enumerate(zip(topk.indices.tolist(), topk.values.tolist()), start=1):
         p = works[idx]
-        out.append({
-            "index": idx,
+        recs.append({
+            "rank": rank,
+            "title": p.get("title", "N/A"),
+            "authors": [a.get("name") for a in p.get("authors", [])][:5],
+            "venue": p.get("venue", "N/A"),
+            "year": p.get("year", "N/A"),
+            "url": p.get("url", "N/A"),
             "score": float(score),
-            "title": p.get("title"),
-            "authors": [a.get("name") for a in p.get("authors", [])][:4],
-            "venue": p.get("venue"),
-            "year": p.get("year"),
-            "url": p.get("url")
+            "index": idx,
         })
-    return out, meta_weights, trained, works
+
+    return recs, meta_weights, trained, works
 
 
-# =====================================================================================
-# MAIN UI
-# =====================================================================================
+# ===========================================================
+# UI
+# ===========================================================
 def main():
+    inject_cyberpunk_css()
 
-    # TITLE
     st.markdown(
         """
-        <h1 style='text-align:center;
-                  font-size:45px;
-                  background:linear-gradient(90deg,#00fff7,#ff00d2,#ffd05e);
-                  -webkit-background-clip:text;
-                  color:transparent;
-                  font-weight:900'>
-            Heterogeneous Graph Neural Network For<br>
-            Academic Paper Recommendation
-        </h1>
+        <div class='neon-title'>
+        Heterogeneous Graph Neural Network For Academic Paper Recommendation
+        </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.write("")
-    st.write("")
-
-    # INPUT
-    query = st.text_input(
-        "🔎 Research Topic",
-        placeholder="e.g., Graph Neural Networks"
-    )
-    col1, col2 = st.columns(2)
-    with col1:
-        limit = st.slider("Papers to Fetch", 10, 50, 25)
-    with col2:
-        top_k = st.slider("Top K Results", 5, 20, 10)
+    # 🧭 Sidebar controls — CLEAN
+    query = st.text_input("🔍 Research Topic", "Neural Networks")
+    limit = st.sidebar.slider("Paper Fetch Count", 10, 50, 25)
+    top_k = st.sidebar.slider("Top-K Results", 3, 20, 10)
 
     tabs = st.tabs(["📚 Recommendations", "🌐 Graph View", "🧠 Train Model"])
 
-    # =================================================== Tab 1 Recommendation
+    # ------------------------------------------------ TAB 1
     with tabs[0]:
         if st.button("🚀 Recommend"):
-            with st.spinner("Running Meta-path GNN..."):
-                recs, weights, trained, works = recommend(query, limit, top_k)
+            with st.spinner("Running semantic GNN..."):
+                recs, meta_weights, trained, works = get_recommendations(query, limit, top_k)
 
             if not recs:
-                st.error("No papers found!")
+                st.warning("No papers found.")
             else:
-                if trained:
-                    st.success("Model trained ✔")
-                else:
-                    st.warning("Using untrained weights ⚠")
-
                 for r in recs:
-                    st.markdown(
-                        f"""
-                        <div style="
-                            background:rgba(255,255,255,0.04);
-                            padding:14px;border-radius:10px;margin:7px 0;
-                            border:1px solid rgba(0,255,255,0.18);">
-                        <b>{r['title']}</b><br>
-                        <span style='color:#8AF6FF'>Authors:</span> {", ".join(r['authors'])}<br>
-                        <span style='color:#FF9DDD'>Score:</span> {r['score']:.4f}<br>
-                        <a href="{r['url']}" target="_blank">🔗 Open Paper</a>
+                    st.markdown(f"""
+                    <div class="rec-card">
+                        <div class="rec-title">{r['rank']}. {r['title']}</div>
+                        <div class="rec-meta"><b>Authors:</b> {", ".join(r['authors'])}</div>
+                        <div class="rec-meta"><b>Venue:</b> {r['venue']} | <b>Year:</b> {r['year']}</div>
+                        <div style="margin-top:6px;">
+                            <span class="score-tag">Score: {r['score']:.4f}</span>
                         </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                        <div class="rec-link" style="margin-top:6px;">
+                            {'<a href="'+r['url']+'" target="_blank">🔗 Open Paper</a>' if r['url']!='N/A' else ''}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
 
-    # =================================================== Tab 2 Graph View
+    # ------------------------------------------------ TAB 2
     with tabs[1]:
-        if st.button("🌐 Visualize Graph"):
+        st.write("Visualize paper graph relationships.")
+        if st.button("🌐 Build Graph"):
             works = fetch_papers(query, limit)
             pap, pvp = build_meta_path_adjs(works)
             visualize_graph(works, pap, pvp)
 
-            with open("graph.html","r") as f:
-                html(f.read(), height=700)
+            if os.path.exists("graph.html"):
+                with open("graph.html") as f:
+                    html(f.read(), height=780, scrolling=True)
 
-    # =================================================== Tab 3 Train
+    # ------------------------------------------------ TAB 3
     with tabs[2]:
-        if st.button("🧠 Train on Topic"):
-            st.info("Training… Check console logs.")
-            train_model(query)
-            st.success("Model trained and saved ✔")
+        st.write("Train model using BPR loss")
+        if st.button("🏋️ Train"):
+            with st.spinner("Training..."):
+                train_model(query)
+            st.success("Training Done.")
 
 
 if __name__ == "__main__":
