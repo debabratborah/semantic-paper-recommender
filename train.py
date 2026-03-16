@@ -1,117 +1,194 @@
 import torch
 import torch.nn.functional as F
 from torch import nn
-from sentence_transformers import SentenceTransformer
+
+from config import params
 from data_utils import fetch_papers, build_meta_path_adjs
+
 from models.aggregator import SemanticAggregator, aggregate_meta_path
 from models.fusion import SemanticFusion
-from config import params
-import random
 
 
-# -------------------------------------------------------
-# Generate positive and negative samples (BPR)
-# -------------------------------------------------------
-def generate_training_samples(num_items):
-    samples = []
-    all_items = list(range(num_items))
+# =========================================================
+# LOAD DATASET
+# =========================================================
 
-    for pos in all_items:
-        neg = random.choice([i for i in all_items if i != pos])
-        samples.append((pos, neg))
+def load_dataset():
 
-    return samples
+    works = fetch_papers(query=None, limit=params["subset_size"])
 
+    print("Loaded papers:", len(works))
+
+    return works
 
 
-# -------------------------------------------------------
-# TRAINING FUNCTION
-# -------------------------------------------------------
-def train_model(query):
+# =========================================================
+# LOAD PRECOMPUTED EMBEDDINGS
+# =========================================================
 
-    print(f"Training on query: {query}")
+def load_embeddings(device):
 
-    # 1. Fetch papers
-    works = fetch_papers(query, limit=40)
-    if not works:
-        print("No papers fetched.")
-        return
+    print("Loading precomputed embeddings...")
 
-    titles = [w.get("title", "") for w in works]
+    paper_emb = torch.load("paper_embeddings.pt")
 
-    # 2. Encode paper titles
-    st = SentenceTransformer("intfloat/e5-base-v2")
+    paper_emb = paper_emb.to(device)
 
-    paper_emb = torch.tensor(
-        st.encode(titles), dtype=torch.float, device=params["device"]
-    )
+    print("Embedding shape:", paper_emb.shape)
 
-    # 3. Build meta-path adjacencies
-    pap_neighbors, pvp_neighbors = build_meta_path_adjs(works)
+    return paper_emb
 
-    # 4. Create model components
-    aggregator_pap = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(params["device"])
-    aggregator_pvp = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(params["device"])
 
-    proj_identity = nn.Linear(params["st_dim"], params["semantic_proj_dim"] * params["L"]).to(params["device"])
-    fusion = SemanticFusion(params["semantic_proj_dim"] * params["L"], params["semantic_proj_dim"]).to(params["device"])
-    proj_user = nn.Linear(params["st_dim"], params["semantic_proj_dim"] * params["L"]).to(params["device"])
+# =========================================================
+# TRAIN MODEL
+# =========================================================
 
-    # 5. Optimizer
-    model_params = (
-        list(aggregator_pap.parameters()) +
-        list(aggregator_pvp.parameters()) +
+def train_model():
+
+    device = params["device"]
+
+    # ------------------------------------------
+    # Load dataset
+    # ------------------------------------------
+
+    works = load_dataset()
+
+    # ------------------------------------------
+    # Load embeddings
+    # ------------------------------------------
+
+    paper_emb = load_embeddings(device)
+
+    # ------------------------------------------
+    # Build meta-path graphs
+    # ------------------------------------------
+
+    (
+        pap_neighbors,
+        pvp_neighbors,
+        pyp_neighbors,
+        pkp_neighbors,
+        pcp_neighbors
+    ) = build_meta_path_adjs(works)
+
+    # ------------------------------------------
+    # Initialize aggregators
+    # ------------------------------------------
+
+    ag_pap = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
+    ag_pvp = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
+    ag_pyp = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
+    ag_pkp = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
+    ag_pcp = SemanticAggregator(params["st_dim"], params["semantic_proj_dim"]).to(device)
+
+    # identity projection
+    proj_identity = nn.Linear(
+        params["st_dim"],
+        params["semantic_proj_dim"] * params["L"]
+    ).to(device)
+
+    # semantic fusion
+    fusion = SemanticFusion(
+        params["semantic_proj_dim"] * params["L"],
+        params["attn_dim"]
+    ).to(device)
+
+    # ------------------------------------------
+    # Optimizer
+    # ------------------------------------------
+
+    optimizer = torch.optim.Adam(
+        list(ag_pap.parameters()) +
+        list(ag_pvp.parameters()) +
+        list(ag_pyp.parameters()) +
+        list(ag_pkp.parameters()) +
+        list(ag_pcp.parameters()) +
         list(proj_identity.parameters()) +
-        list(fusion.parameters()) +
-        list(proj_user.parameters())
+        list(fusion.parameters()),
+        lr=params["lr"]
     )
-    optimizer = torch.optim.Adam(model_params, lr=1e-3)
 
-    # 6. Training samples
-    train_samples = generate_training_samples(len(works))
+    # ------------------------------------------
+    # Training loop
+    # ------------------------------------------
 
-    # -------------------------------------------------------
-    # TRAINING LOOP
-    # -------------------------------------------------------
-    for epoch in range(10):
-        total_loss = 0
+    for epoch in range(params["epochs"]):
 
-        for pos, neg in train_samples:
+        optimizer.zero_grad()
 
-            # ---- Forward pass is recomputed every iteration ----
+        # meta-path embeddings
 
-            E_pap = aggregate_meta_path(works, paper_emb, pap_neighbors, aggregator_pap, L=params["L"])
-            E_pvp = aggregate_meta_path(works, paper_emb, pvp_neighbors, aggregator_pvp, L=params["L"])
-            E_identity = F.relu(proj_identity(paper_emb))
+        E_pap = aggregate_meta_path(
+            works, paper_emb, pap_neighbors, ag_pap, L=params["L"]
+        )
 
-            fused_items, _ = fusion([E_identity, E_pap, E_pvp])
-            fused_items = F.normalize(fused_items, dim=1)
+        E_pvp = aggregate_meta_path(
+            works, paper_emb, pvp_neighbors, ag_pvp, L=params["L"]
+        )
 
-            # Query encoding
-            q_emb = torch.tensor(st.encode([query])[0], dtype=torch.float, device=params["device"])
-            q_proj = F.normalize(proj_user(q_emb), dim=0)
+        E_pyp = aggregate_meta_path(
+            works, paper_emb, pyp_neighbors, ag_pyp, L=params["L"]
+        )
 
-            # ---- BPR Loss ----
-            score_pos = torch.dot(fused_items[pos], q_proj)
-            score_neg = torch.dot(fused_items[neg], q_proj)
+        E_pkp = aggregate_meta_path(
+            works, paper_emb, pkp_neighbors, ag_pkp, L=params["L"]
+        )
 
-            loss = -torch.log(torch.sigmoid(score_pos - score_neg))
-            total_loss += loss.item()
+        E_pcp = aggregate_meta_path(
+            works, paper_emb, pcp_neighbors, ag_pcp, L=params["L"]
+        )
 
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+        # identity embeddings
+        E_identity = torch.relu(proj_identity(paper_emb))
 
-        print(f"Epoch {epoch+1} — Loss = {total_loss:.4f}")
+        # semantic fusion
+        fused_items, weights = fusion([
+            E_identity,
+            E_pap,
+            E_pvp,
+            E_pyp,
+            E_pkp,
+            E_pcp
+        ])
 
+        fused_items = F.normalize(fused_items, dim=1)
 
+        # similarity matrix
+        sim_matrix = torch.matmul(fused_items, fused_items.T)
+
+        loss = -torch.mean(torch.log(torch.sigmoid(sim_matrix)))
+
+        loss.backward()
+
+        optimizer.step()
+
+        print(f"Epoch {epoch+1}/{params['epochs']}  Loss: {loss.item():.4f}")
+
+    # ------------------------------------------
     # Save model
+    # ------------------------------------------
+
     torch.save({
-        "aggregator_pap": aggregator_pap.state_dict(),
-        "aggregator_pvp": aggregator_pvp.state_dict(),
+
+        "aggregator_pap": ag_pap.state_dict(),
+        "aggregator_pvp": ag_pvp.state_dict(),
+        "aggregator_pyp": ag_pyp.state_dict(),
+        "aggregator_pkp": ag_pkp.state_dict(),
+        "aggregator_pcp": ag_pcp.state_dict(),
+
         "proj_identity": proj_identity.state_dict(),
-        "fusion": fusion.state_dict(),
-        "proj_user": proj_user.state_dict()
+
+        "fusion": fusion.state_dict()
+
     }, "model_trained.pt")
 
-    print("\nTraining completed successfully. Saved as model_trained.pt.\n")
+    print("Model saved → model_trained.pt")
+
+
+# =========================================================
+# RUN TRAINING
+# =========================================================
+
+if __name__ == "__main__":
+
+    train_model()
