@@ -58,7 +58,7 @@ def recommend(query, limit=25, top_k=10):
     q_emb = torch.tensor(
         st_model.encode([query])[0], dtype=torch.float, device=device
     )
-    q_proj = F.normalize(torch.relu(proj_identity(q_emb)), dim=0)
+    q_proj = F.normalize(proj_identity(q_emb), dim=0)
 
     scores = torch.mv(fused_embeddings, q_proj)
     k = min(top_k, len(scores))
